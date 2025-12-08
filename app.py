@@ -3,9 +3,18 @@ from datetime import date, datetime, timedelta
 import os
 
 # Configure Flask app with explicit paths for serverless environments
-template_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'templates'))
-app = Flask(__name__, template_folder=template_dir)
-app.secret_key = "super-secret-key-change-me"
+# Get the directory where this file is located
+base_dir = os.path.dirname(os.path.abspath(__file__))
+template_dir = os.path.join(base_dir, 'templates')
+
+# Ensure template directory exists, fallback to default if not
+if os.path.exists(template_dir):
+    app = Flask(__name__, template_folder=template_dir)
+else:
+    # Fallback to default Flask template location
+    app = Flask(__name__)
+
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'super-secret-key-change-me')
 
 
 # ---------- Helper functions ----------

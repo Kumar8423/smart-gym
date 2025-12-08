@@ -1,7 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from datetime import date, datetime, timedelta
+import os
 
-app = Flask(__name__)
+# Configure Flask app with explicit paths for serverless environments
+template_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'templates'))
+app = Flask(__name__, template_folder=template_dir)
 app.secret_key = "super-secret-key-change-me"
 
 
